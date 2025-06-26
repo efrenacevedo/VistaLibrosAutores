@@ -10,7 +10,7 @@ import {
   Search as SearchIcon
 } from '@mui/icons-material';
 
-const API_BASE = 'http://www.autorlibrosservices.somee.com/api/autores'; // Cambia por tu base URL
+const API_BASE = 'tiendamicroserviciosautorapi-production.up.railway.app/api/autores'; // Cambia por tu base URL
 
 const Autores = () => {
   const [autores, setAutores] = useState([]);
