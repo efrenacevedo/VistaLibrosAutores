@@ -11,11 +11,46 @@ export default function Login() {
 
   const handleLogin = async () => {
     try {
-      const res = await api.post("/login", { username, password });
-      localStorage.setItem("token", res.data.token); // guardar token
-      navigate("/autores"); // redirige a vista principal
+      const res = await api.post("/auth/login", { username, password });
+
+      const { token, refreshToken, expiration } = res.data;
+
+      // Guardar tokens y fecha de expiración
+      localStorage.setItem("token", token);
+      localStorage.setItem("refreshToken", refreshToken);
+      localStorage.setItem("tokenExpiration", expiration);
+
+      scheduleTokenRefresh(); // inicia el auto refresh
+      navigate("/autores");
     } catch (err) {
-      setMsg("Error: " + err.response?.data?.error || err.message);
+      setMsg("Error: " + (err.response?.data?.error || err.message));
+    }
+  };
+
+  // Refrescar token automáticamente antes de que expire
+  const scheduleTokenRefresh = () => {
+    const expiration = new Date(localStorage.getItem("tokenExpiration"));
+    const now = new Date();
+    const timeUntilRefresh = expiration - now - 60000; // 1 min antes de expirar
+
+    if (timeUntilRefresh > 0) {
+      setTimeout(async () => {
+        try {
+          const res = await api.post("/auth/refresh", {
+            refreshToken: localStorage.getItem("refreshToken"),
+          });
+
+          const { token, refreshToken, expiration } = res.data;
+          localStorage.setItem("token", token);
+          localStorage.setItem("refreshToken", refreshToken);
+          localStorage.setItem("tokenExpiration", expiration);
+
+          scheduleTokenRefresh(); // programar siguiente renovación
+        } catch (err) {
+          console.error("Error al renovar el token:", err);
+          setMsg("Tu sesión ha expirado. Inicia sesión nuevamente.");
+        }
+      }, timeUntilRefresh);
     }
   };
 
@@ -41,21 +76,10 @@ export default function Login() {
         Ingresar
       </Button>
 
-      <Button
-        fullWidth
-        variant="text"
-        sx={{ mt: 1 }}
-        onClick={() => navigate("/recover")}
-      >
+      <Button fullWidth variant="text" sx={{ mt: 1 }} onClick={() => navigate("/recover")}>
         ¿Olvidaste tu contraseña?
       </Button>
-
-      <Button
-        fullWidth
-        variant="text"
-        sx={{ mt: 1 }}
-        onClick={() => navigate("/register")}
-      >
+      <Button fullWidth variant="text" sx={{ mt: 1 }} onClick={() => navigate("/register")}>
         ¿No tienes cuenta? Registrarse
       </Button>
 

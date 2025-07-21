@@ -27,7 +27,7 @@ function App() {
       <BrowserRouter>
       <Navbar/>
         <Routes>
-          <Route path="/" element={<Login toggleTheme={toggleTheme} mode={mode} />} />
+          <Route path="/login" element={<Login toggleTheme={toggleTheme} mode={mode} />} />
         <Route path="/register" element={<Register toggleTheme={toggleTheme} mode={mode} />} />
         <Route path="/recover" element={<Recover toggleTheme={toggleTheme} mode={mode} />} />
           <Route path="/libros" element={
