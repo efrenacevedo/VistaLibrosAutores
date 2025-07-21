@@ -20,7 +20,7 @@ const Navbar = () => {
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("tokenExpiration");
     setIsLoggedIn(false);
-    navigate("/login");
+    navigate("/");
   };
 
   useEffect(() => {
