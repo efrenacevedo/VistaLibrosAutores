@@ -27,9 +27,15 @@ const Navbar = () => {
     const checkAuth = () => setIsLoggedIn(!!localStorage.getItem("token"));
     checkAuth();
 
-    // Opcional: escucha cambios en localStorage desde otras pestañas
     window.addEventListener("storage", checkAuth);
-    return () => window.removeEventListener("storage", checkAuth);
+
+    // Verifica cada segundo si el token sigue activo (por navegación interna)
+    const interval = setInterval(checkAuth, 1000);
+
+    return () => {
+      window.removeEventListener("storage", checkAuth);
+      clearInterval(interval);
+    };
   }, []);
 
   return (

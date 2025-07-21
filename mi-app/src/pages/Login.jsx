@@ -10,22 +10,25 @@ export default function Login() {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    try {
-      const res = await api.post("/auth/login", { username, password });
+  try {
+    const res = await api.post("/auth/login", { username, password });
 
-      const { token, refreshToken, expiration } = res.data;
+    const { token, refreshToken, expiration } = res.data;
 
-      // Guardar tokens y fecha de expiración
-      localStorage.setItem("token", token);
-      localStorage.setItem("refreshToken", refreshToken);
-      localStorage.setItem("tokenExpiration", expiration);
+    // Guardar tokens y fecha de expiración
+    localStorage.setItem("token", token);
+    localStorage.setItem("refreshToken", refreshToken);
+    localStorage.setItem("tokenExpiration", expiration);
 
-      scheduleTokenRefresh(); // inicia el auto refresh
-      navigate("/autores");
-    } catch (err) {
-      setMsg("Error: " + (err.response?.data?.error || err.message));
-    }
-  };
+    console.log("Token recibido:", token); // 👈 Aquí está el log en consola
+
+    scheduleTokenRefresh(); // inicia el auto refresh
+    navigate("/autores");
+  } catch (err) {
+    setMsg("Error: " + (err.response?.data?.error || err.message));
+  }
+};
+
 
   // Refrescar token automáticamente antes de que expire
   const scheduleTokenRefresh = () => {
