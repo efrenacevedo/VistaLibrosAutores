@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const api = axios.create({
  // baseURL: import.meta.env.VITE_API_URL || 'https://localhost:5000/api',
-baseURL: import.meta.env.VITE_API_URL || 'https://utttmicrolibro-production.up.railway.app/api',
+baseURL: import.meta.env.VITE_API_URL || 'https://uttt-micro-libro-efrenacevedos-projects.vercel.app/api',
  
 });
 // Middleware para insertar token si existe
