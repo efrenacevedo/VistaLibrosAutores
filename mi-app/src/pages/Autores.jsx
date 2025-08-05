@@ -10,7 +10,7 @@ import {
   Search as SearchIcon
 } from '@mui/icons-material';
 
-const API_BASE = 'https://tienda-micro-servicios-autor-api.vercel.app/api/Autores'; 
+const API_BASE = 'https://tienda-microservicios-autor-api-obnj.onrender.com/api/Autores'; 
 
 const Autores = () => {
   const [autores, setAutores] = useState([]);
